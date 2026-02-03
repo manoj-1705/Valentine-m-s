@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Valentine Proposal</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            background: #ffd6e0;
+            gap: 30px;
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .buttons-wrapper {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .yes-container {
+            display: contents;
+        }
+
+        .no-container {
+            display: contents;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+        }
+
+        button {
+            padding: 12px 28px;
+            margin: 10px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .yes {
+            background: black;
+            color: pink;
+        }
+
+        .yes:hover {
+            transform: scale(1.05);
+        }
+
+        .no {
+            background: white;
+            color: black;
+            position: relative;
+        }
+
+        .valentine-text {
+            color: #ff1493;
+            font-weight: bold;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .smita-text {
+            background: linear-gradient(135deg, #ff1493, #ff69b4, #ff1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        #message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #ff1493;
+            padding: 30px 50px;
+            border-radius: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            z-index: 1000;
+            min-width: 300px;
+            text-align: center;
+            display: none;
+            animation: fadeInOut 2s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .heart {
+            position: fixed;
+            bottom: -20px;
+            font-size: 24px;
+            animation: floatUp 5s linear forwards;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <video autoplay muted loop playsinline>
+        <source src="Need Video.mp4" type="video/mp4">
+    </video>
+
+    <h1 class="valentine-text">Will You Be My Valentine?</h1>
+    <h1 class="smita-text">Smita? ❤️</h1>
+
+    <div class="buttons-wrapper">
+        <div class="yes-container" id="yesContainer">
+            <button class="yes" onclick="yesClicked()">Yes! 💖</button>
+        </div>
+        <div class="no-container" id="noContainer">
+            <button class="no" id="noBtn" onclick="handleNoClick()">No</button>
+        </div>
+    </div>
+
+    <div id="message"></div>
+
+    <script>
+        let noClickCount = 0;
+
+        function showMessage(text) {
+            const messageDiv = document.getElementById("message");
+            messageDiv.textContent = text;
+            messageDiv.style.display = "block";
+            
+            setTimeout(() => {
+                messageDiv.style.display = "none";
+            }, 2000);
+        }
+
+        function yesClicked() {
+            showMessage("Yayyy ❤️ Thank you Baby🥹!");
+        }
+
+        function handleNoClick() {
+            noClickCount++;
+            const noContainer = document.getElementById("noContainer");
+            
+            const randomX = Math.random() * (window.innerWidth - 150);
+            const randomY = Math.random() * (window.innerHeight - 100);
+            
+            if (noClickCount === 1) {
+                noContainer.innerHTML = '<button class="no" id="reallyBtn" onclick="handleReallyClick()" style="position: fixed; left: ' + randomX + 'px; top: ' + randomY + 'px; animation: popIn 0.6s ease-out;">Really?</button>';
+            } else if (noClickCount === 2) {
+                noContainer.innerHTML = '<button class="no" id="thinkBtn" onclick="handleThinkClick()" style="position: fixed; left: ' + randomX + 'px; top: ' + randomY + 'px; animation: popIn 0.6s ease-out;">Think again!</button>';
+            } else if (noClickCount === 3) {
+                noContainer.innerHTML = '<button class="no" id="clickBtn" onclick="handleClickClick()" style="position: fixed; left: ' + randomX + 'px; top: ' + randomY + 'px; animation: popIn 0.6s ease-out;">Please say yes!</button>';
+            } else {
+                noContainer.innerHTML = '<button class="no" id="yesBtn" onclick="handleYesClick()" style="position: fixed; left: ' + randomX + 'px; top: ' + randomY + 'px; animation: popIn 0.6s ease-out;">You know you want to!</button>';
+            }
+        }
+
+        function handleReallyClick() {
+            noClickCount = 2;
+            handleNoClick();
+        }
+
+        function handleThinkClick() {
+            noClickCount = 3;
+            handleNoClick();
+        }
+
+        function handleClickClick() {
+            noClickCount = 4;
+            handleNoClick();
+        }
+
+        function handleYesClick() {
+            noClickCount++;
+            const noContainer = document.getElementById("noContainer");
+            const yesContainer = document.getElementById("yesContainer");
+            const wrapper = document.querySelector(".buttons-wrapper");
+            
+            noContainer.innerHTML = '';
+            yesContainer.innerHTML = '';
+            
+            wrapper.innerHTML = '<div class="no-container"><button class="no" id="pleaseBtn" onclick="handlePleaseClick()" style="background: linear-gradient(135deg, #ff1493, #ff69b4); color: white; font-weight: bold; font-size: 16px; padding: 15px 40px;">Pleaseeee Sayy Yessss 💕</button></div>';
+        }
+
+        function handlePleaseClick() {
+            const wrapper = document.querySelector(".buttons-wrapper");
+            
+            wrapper.innerHTML = '<div class="yes-container"><button class="yes" id="yesYesYesBtn" onclick="openSuccessPage()" style="background: linear-gradient(135deg, #ff1493, #ff69b4); color: white; font-weight: bold; font-size: 18px; padding: 15px 40px;">YES YES YES!!! 💖</button></div>';
+        }
+
+        function openSuccessPage() {
+            window.open('success.html', '_blank');
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = Math.random() * 20 + 20 + "px";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 500);
+    </script>
+</body>
+</html>
